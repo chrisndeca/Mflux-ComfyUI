@@ -1,5 +1,6 @@
 import os
 import json
+import comfyui
 from pathlib import Path 
 from huggingface_hub import snapshot_download
 from folder_paths import get_filename_list, get_output_directory, models_dir
@@ -125,7 +126,7 @@ class QuickMfluxNode:
     def INPUT_TYPES(cls):
         return {
             "required": {
-                "prompt": ("STRING", {"multiline": True, "dynamicPrompts": True, "tooltip": "The text to be encoded.", "default": "Luxury food photograph"}),
+                "text": ("STRING", {"multiline": True, "default": ""}), # Added input for the Mflux_prompt output
                 "model": (["dev", "schnell"], {"default": "schnell"}),
                 "quantize": (["None", "4", "8"], {"default": "4"}),
                 "seed": ("INT", {"default": -1, "min": -1, "max": 0xffffffffffffffff}),
@@ -151,7 +152,7 @@ class QuickMfluxNode:
     CATEGORY = "MFlux/Air"
     FUNCTION = "generate"
 
-    def generate(self, prompt, model, seed, width, height, steps, guidance, quantize="None", metadata=True, Local_model="", img2img=None, Loras=None, ControlNet=None, full_prompt=None, extra_pnginfo=None):
+    def generate(self, text, model, seed, width, height, steps, guidance, quantize="None", metadata=True, Local_model="", img2img=None, Loras=None, ControlNet=None, full_prompt=None, extra_pnginfo=None):
         generated_images = generate_image(
             prompt, model, seed, width, height, steps, guidance, quantize, metadata, Local_model, img2img, Loras, ControlNet
         )
@@ -163,7 +164,7 @@ class QuickMfluxNode:
         if metadata:
             save_images_params = {
                 "images": generated_images,
-                "prompt": prompt,
+                "prompt": text,
                 "model": "dev" if "dev" in Local_model.lower() else "schnell" if "schnell" in Local_model.lower() else model,
                 "quantize": quantize,
                 "Local_model": Local_model,
@@ -185,3 +186,22 @@ class QuickMfluxNode:
             counter = result["counter"]
 
         return generated_images
+
+class Mflux_prompt:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {},
+            "optional": {}
+        }
+
+    RETURN_TYPES = ("STRING",) # Text output
+    RETURN_NAMES = ("text",)
+    FUNCTION = "get_prompt"
+    CATEGORY = "Mflux"  # or a more appropriate category
+
+    def get_prompt(self):
+        # You might want to add some logic here,
+        # like loading a prompt from a file or generating one.
+        # For now, we just return an empty string.
+        return ("",)
