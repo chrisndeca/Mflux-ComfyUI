@@ -9,6 +9,7 @@ NODE_CLASS_MAPPINGS = {
     "MfluxImg2Img": MfluxImg2Img,
     "MfluxLorasLoader": MfluxLorasLoader,
     "MfluxControlNetLoader": MfluxControlNetLoader,
+    "Mflux_prompt": Mflux_prompt,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -19,4 +20,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MfluxImg2Img": "Mflux Img2Img",
     "MfluxLorasLoader": "MFlux Loras Loader",
     "MfluxControlNetLoader": "MFlux ControlNet Loader",
+    "Mflux_prompt": "Mflux Text Prompt"
 }
