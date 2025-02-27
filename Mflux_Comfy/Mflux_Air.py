@@ -1,6 +1,5 @@
 import os
 import json
-import comfyui
 from pathlib import Path 
 from huggingface_hub import snapshot_download
 from folder_paths import get_filename_list, get_output_directory, models_dir
